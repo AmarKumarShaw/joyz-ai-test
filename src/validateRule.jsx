@@ -85,7 +85,7 @@ const OrgChartValidator = () => {
             className="block text-start mb-2 p-4 py-0 text-lg font-medium text-gray-900"
             htmlFor="file_input"
           >
-            Upload file
+            Please Upload file here 
           </label>
           <input
             type="file"
@@ -96,7 +96,7 @@ const OrgChartValidator = () => {
           />
 
           <p className="mt-1 p-4 py-0 text-md text-left text-gray-500">
-            .csv only
+            .csv and .xlsx only
           </p>
           {MessageError && <p className="text-red-500 px-4">{MessageError}</p>}
         </div>
