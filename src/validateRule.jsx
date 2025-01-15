@@ -17,6 +17,7 @@ const OrgChartValidator = () => {
     if (!file) {
       console.error("No file selected");
       setMessageError("No file selected");
+      setLoading(true)
       return;
     }
     setMessageError(null);
@@ -34,7 +35,6 @@ const OrgChartValidator = () => {
       const sheetName = workbook.SheetNames[0];
       const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
       setFileData(sheetData);
-      console.log(sheetData);
       validateData(sheetData);
       setLoading(false);
     };
@@ -75,17 +75,19 @@ const OrgChartValidator = () => {
   return (
     <div>
       <div className="flex flex-col justify-center items-center">
-        
-<div className="py-6">
-<img className="h-14"
-        src="https://joyz.ai/assets/images/logo-with-insignia.svg" alt="" />
-</div>
+        <div className="py-6">
+          <img
+            className="h-14"
+            src="https://joyz.ai/assets/images/logo-with-insignia.svg"
+            alt=""
+          />
+        </div>
         <div className="text-start w-4/5">
           <label
             className="block text-start mb-2 p-4 py-0 text-lg font-medium text-gray-900"
             htmlFor="file_input"
           >
-            Please Upload file here 
+            Please Upload file here
           </label>
           <input
             type="file"
