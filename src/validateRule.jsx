@@ -76,8 +76,8 @@ const OrgChartValidator = () => {
     <div>
       <div className="flex flex-col justify-center items-center">
         
-<div className="py-4">
-<img className="h-12"
+<div className="py-6">
+<img className="h-14"
         src="https://joyz.ai/assets/images/logo-with-insignia.svg" alt="" />
 </div>
         <div className="text-start w-4/5">
