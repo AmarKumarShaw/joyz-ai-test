@@ -54,9 +54,11 @@ const OrgChartValidator = () => {
   //Validating Data
   const validateData = (data) => {
     const errors = [];
+    const graph = {};
+    const roles = {};
 
     data.forEach((row, index) => {
-      const { Role, ReportsTo } = row;
+      const { Email, Role, ReportsTo } = row;
 
       const parentRole =
         data.find((parent) => parent.Email === ReportsTo)?.Role || null;
@@ -67,8 +69,29 @@ const OrgChartValidator = () => {
           message: `Invalid reporting: ${Role} → ${parentRole || "None"}`,
         });
       }
+      // Build graph for cycle detection
+                if (!graph[ReportsTo]) graph[ReportsTo] = [];
+                graph[ReportsTo].push(Email);
+                roles[Email] = Role;
     });
 
+
+     // Detect cycles
+            const visited = new Set();
+            const dfs = (node, stack) => {
+                if (stack.has(node)) {
+                    errors.push({ message: `Cycle detected involving ${node}` });
+                    return true;
+                }
+                if (visited.has(node)) return false;
+
+                visited.add(node);
+                stack.add(node);
+                (graph[node] || []).forEach((child) => dfs(child, stack));
+                stack.delete(node);
+            };
+
+            Object.keys(graph).forEach((node) => dfs(node, new Set()));
     setErrors(errors);
   };
 
