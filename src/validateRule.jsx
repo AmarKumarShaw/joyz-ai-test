@@ -17,7 +17,7 @@ const OrgChartValidator = () => {
     if (!file) {
       console.error("No file selected");
       setMessageError("No file selected");
-      setLoading(true)
+      setLoading(true);
       return;
     }
     setMessageError(null);
@@ -70,28 +70,27 @@ const OrgChartValidator = () => {
         });
       }
       // Build graph for cycle detection
-                if (!graph[ReportsTo]) graph[ReportsTo] = [];
-                graph[ReportsTo].push(Email);
-                roles[Email] = Role;
+      if (!graph[ReportsTo]) graph[ReportsTo] = [];
+      graph[ReportsTo].push(Email);
+      roles[Email] = Role;
     });
 
+    // Detect cycles
+    const visited = new Set();
+    const dfs = (node, stack) => {
+      if (stack.has(node)) {
+        errors.push({ message: `Cycle detected involving ${node}` });
+        return true;
+      }
+      if (visited.has(node)) return false;
 
-     // Detect cycles
-            const visited = new Set();
-            const dfs = (node, stack) => {
-                if (stack.has(node)) {
-                    errors.push({ message: `Cycle detected involving ${node}` });
-                    return true;
-                }
-                if (visited.has(node)) return false;
+      visited.add(node);
+      stack.add(node);
+      (graph[node] || []).forEach((child) => dfs(child, stack));
+      stack.delete(node);
+    };
 
-                visited.add(node);
-                stack.add(node);
-                (graph[node] || []).forEach((child) => dfs(child, stack));
-                stack.delete(node);
-            };
-
-            Object.keys(graph).forEach((node) => dfs(node, new Set()));
+    Object.keys(graph).forEach((node) => dfs(node, new Set()));
     setErrors(errors);
   };
 
